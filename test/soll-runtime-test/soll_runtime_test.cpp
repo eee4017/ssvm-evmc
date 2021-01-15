@@ -14,7 +14,7 @@ const char *evmc_library = "./libssvm-evmc.so";
 evmc_host_context *context;
 const evmc_host_interface *host_interface;
 
-#define DEBUG
+// #define DEBUG
 
 extern "C"{
 
@@ -116,15 +116,13 @@ void evmc_vm_execute(bytes calldata, size_t calldata_size, bytes sender, bytes d
 
 void evmc_get_storage(const bytes addr, const bytes key, bytes ret) {
 #ifdef DEBUG
-  printf("%d, %p\n", *(int *)key, ret);
   for(int i = 0;i < 20; i++) printf("%x", addr[i]); printf("\n");
+  for(int i = 0;i < 32; i++) printf("%x", key[i]); printf("\n");
 #endif
   evmc::address address = bytes_to_address(addr);
   evmc::bytes32 _ret;
-  _ret = host_interface->get_storage(context, &address, (evmc_bytes32 *)key);
-  printf("%d\n", *((int *)_ret.bytes));
-  memcpy(ret, &_ret.bytes, 32);
+  _ret = host_interface->get_storage(context, &address, (evmc::bytes32 *)key);
+  for(int i = 0;i < 32; i++) ret[i] = _ret.bytes[i];
 }
-
 
 }

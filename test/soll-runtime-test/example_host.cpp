@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <cstdio>
 
 using namespace evmc::literals;
 
@@ -63,7 +64,7 @@ public:
         const auto account_iter = accounts.find(addr);
         if (account_iter == accounts.end())
             return {};
-
+        
         const auto storage_iter = account_iter->second.storage.find(key);
         if (storage_iter != account_iter->second.storage.end())
             return storage_iter->second;

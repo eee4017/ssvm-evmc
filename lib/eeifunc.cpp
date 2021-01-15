@@ -5,6 +5,11 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
+#include <iostream>
+#include <cstdio>
+#define DEBUG(x)\
+   { std::cerr << "[EEI DEBUG]" << x << '\n'; }
+
 namespace SSVM {
 namespace Host {
 
@@ -736,6 +741,14 @@ Expect<void> EEIStorageStore::body(Runtime::Instance::MemoryInstance *MemInst,
   }
 
   /// Store value into storage.
+  // DEBUG("EEIStorageStore " << Addr << ' ' << Path << ' ' << Value);
+  #define PRINT_BYTE32(x)  {for(int i = 0;i < 32; i++) fprintf(stderr, "%x", x.bytes[i]); fprintf(stderr, "\n");}
+  fprintf(stderr, "[EEI DEBUG] EEIStorageStore: \n");
+  PRINT_BYTE32(Addr);
+  PRINT_BYTE32(Path);
+  PRINT_BYTE32(Value);
+
+  // fprintf(stderr, "[EEI DEBUG] EEIStorageStore: %x, %d, %d\n", PRINT_BYTE32(Addr), PRINT_BYTE32(Path), PRINT_BYTE32(Value) );
   Cxt.set_storage(Addr, Path, Value);
   return {};
 }
